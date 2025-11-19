@@ -15,7 +15,7 @@
       --card: #ffffff;
       --text: #2b2136;
       --shadow: rgba(0, 0, 0, 0.15);
-      --border-radius: 20px;
+      --border-radius: 32px;
     }
 
     * { box-sizing: border-box; }
@@ -39,7 +39,7 @@
       width: 380px;
       max-width: 380px;
       background: var(--card);
-      border-radius: 32px;
+      border-radius: var(--border-radius);
       box-shadow: 0 18px 40px var(--shadow);
       padding: 24px 20px 28px;
       position: relative;
@@ -152,12 +152,12 @@
       justify-content: space-between;
       gap: 8px;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
-      flex-wrap: nowrap;       /* prevent wrapping */
-      white-space: nowrap;     /* keep text on one line */
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
 
     .streak-bar > div {
-      flex-shrink: 0;          /* don't let the two sides squish */
+      flex-shrink: 0;
     }
 
     .streak-label { font-size: 0.8rem; opacity: 0.9; }
@@ -168,20 +168,20 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      white-space: nowrap;     /* extra protection for the main streak */
+      white-space: nowrap;
     }
 
     .streak-best {
       font-size: 0.75rem;
       opacity: 0.9;
       text-align: right;
-      white-space: nowrap;     /* prevent wrapping of "Best: X days" */
+      white-space: nowrap;
     }
 
     .challenge-card {
       margin-top: 18px;
       padding: 16px 14px 16px;
-      border-radius: var(--border-radius);
+      border-radius: 20px;
       background: linear-gradient(135deg, #fce7ff, #ffffff);
       border: 2px solid rgba(124, 58, 237, 0.12);
       box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
@@ -287,16 +287,23 @@
       text-align: center;
     }
 
+    /* 📱 Mobile tweaks */
     @media (max-width: 480px) {
+      body {
+        padding: 16px;
+        justify-content: center;
+        align-items: center;
+      }
+
       .app-shell {
         padding: 20px 16px 24px;
-        border-radius: 0;
-        max-width: none;
-        min-height: 100vh;
-        transform: scale(0.85);
+        border-radius: var(--border-radius);  /* keep rounded corners */
+        max-width: 360px;
+        width: 100%;
+        min-height: auto;                     /* no forced tall card */
+        transform: scale(0.9);                /* zoom down a bit */
         transform-origin: top center;
         margin: 0 auto;
-        width: 100%;
       }
 
       .app-header {
@@ -309,13 +316,6 @@
 
       .status-text {
         text-align: left;
-      }
-
-      body {
-        padding-top: 20px;
-        padding-bottom: 20px;
-        justify-content: flex-start;
-        align-items: center;
       }
     }
   </style>
