@@ -152,6 +152,12 @@
       justify-content: space-between;
       gap: 8px;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+      flex-wrap: nowrap;       /* prevent wrapping */
+      white-space: nowrap;     /* keep text on one line */
+    }
+
+    .streak-bar > div {
+      flex-shrink: 0;          /* don't let the two sides squish */
     }
 
     .streak-label { font-size: 0.8rem; opacity: 0.9; }
@@ -162,9 +168,15 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      white-space: nowrap;     /* extra protection for the main streak */
     }
 
-    .streak-best { font-size: 0.75rem; opacity: 0.9; text-align: right; }
+    .streak-best {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      text-align: right;
+      white-space: nowrap;     /* prevent wrapping of "Best: X days" */
+    }
 
     .challenge-card {
       margin-top: 18px;
@@ -275,48 +287,37 @@
       text-align: center;
     }
 
-@media (max-width: 480px) {
-  .app-shell {
-    padding: 20px 16px 24px;
-    border-radius: 0;
-    max-width: none;
-    min-height: 100vh;
-  }
+    @media (max-width: 480px) {
+      .app-shell {
+        padding: 20px 16px 24px;
+        border-radius: 0;
+        max-width: none;
+        min-height: 100vh;
+        transform: scale(0.85);
+        transform-origin: top center;
+        margin: 0 auto;
+        width: 100%;
+      }
 
-  .app-header {
-    align-items: flex-start;
-  }
+      .app-header {
+        align-items: flex-start;
+      }
 
-  .app-title {
-    font-size: 1.25rem;
-  }
+      .app-title {
+        font-size: 1.25rem;
+      }
 
-  .streak-bar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+      .status-text {
+        text-align: left;
+      }
 
-  .status-text {
-    text-align: left;
-  }
-
-  /* SCALE THE ENTIRE APP DOWN ON SMALL SCREENS */
-  .app-shell {
-    transform: scale(0.85);
-    transform-origin: top center;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  body {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    justify-content: flex-start;
-    align-items: center;
-  }
-}
-
-
+      body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        justify-content: flex-start;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -333,7 +334,6 @@
           <div class="app-title">
             Daily Challenge
           </div>
-          
         </div>
       </header>
 
