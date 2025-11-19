@@ -276,17 +276,11 @@
     }
 
 @media (max-width: 480px) {
-  body {
-    padding: 0;
-    align-items: stretch;
-    justify-content: flex-start;
-  }
-
   .app-shell {
     padding: 20px 16px 24px;
-    border-radius: 0;         /* make it full-bleed, no rounded corners */
+    border-radius: 0;
     max-width: none;
-    min-height: 100vh;        /* fill full height */
+    min-height: 100vh;
   }
 
   .app-header {
@@ -305,7 +299,23 @@
   .status-text {
     text-align: left;
   }
+
+  /* SCALE THE ENTIRE APP DOWN ON SMALL SCREENS */
+  .app-shell {
+    transform: scale(0.85);
+    transform-origin: top center;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    justify-content: flex-start;
+    align-items: center;
+  }
 }
+
 
   </style>
 </head>
