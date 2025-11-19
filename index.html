@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Daily Challenge</title>
   <!-- Cartoony Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
@@ -274,13 +275,38 @@
       text-align: center;
     }
 
-    @media (max-width: 480px) {
-      .app-shell { padding: 20px 16px 24px; }
-      .app-header { align-items: flex-start; }
-      .app-title { font-size: 1.25rem; }
-      .streak-bar { flex-direction: column; align-items: flex-start; }
-      .status-text { text-align: left; }
-    }
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .app-shell {
+    padding: 20px 16px 24px;
+    border-radius: 0;         /* make it full-bleed, no rounded corners */
+    max-width: none;
+    min-height: 100vh;        /* fill full height */
+  }
+
+  .app-header {
+    align-items: flex-start;
+  }
+
+  .app-title {
+    font-size: 1.25rem;
+  }
+
+  .streak-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status-text {
+    text-align: left;
+  }
+}
+
   </style>
 </head>
 <body>
