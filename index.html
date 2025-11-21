@@ -375,6 +375,7 @@
       </div>
     </div>
   </div>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
     // Expanded challenge sets (+ Random, weighted litter boxes)
@@ -764,7 +765,7 @@
         }
 
         if (state.lastCompletedDate === todayStr) {
-          friendlyStatus("Already counted today. Extra effort = secret bonus XP.");
+          friendlyStatus("You already did this, you silly goose!");
           return;
         }
 
@@ -780,7 +781,14 @@
 
         saveState(state);
         updateStreakDisplay(state);
-        friendlyStatus("Streak updated. 🥳");
+friendlyStatus("Streak updated. 🥳");
+
+// 🎉 Little celebratory confetti burst!
+confetti({
+  particleCount: 80,
+  spread: 70,
+  origin: { y: 0.6 }
+});
       });
     });
   </script>
