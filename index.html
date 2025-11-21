@@ -126,20 +126,6 @@
       gap: 4px;
     }
 
-    .app-pill {
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px dashed rgba(0, 0, 0, 0.08);
-    }
-
-    .app-subtitle {
-      font-size: 0.85rem;
-      margin-top: 2px;
-      opacity: 0.85;
-    }
-
     .streak-bar {
       margin-top: 10px;
       margin-bottom: 10px;
@@ -297,11 +283,11 @@
 
       .app-shell {
         padding: 20px 16px 24px;
-        border-radius: var(--border-radius);  /* keep rounded corners */
+        border-radius: var(--border-radius);
         max-width: 360px;
         width: 100%;
-        min-height: auto;                     /* no forced tall card */
-        transform: scale(0.9);                /* zoom down a bit */
+        min-height: auto;
+        transform: scale(0.9);
         transform-origin: top center;
         margin: 0 auto;
       }
@@ -364,7 +350,7 @@
               ✅ I did it!
             </button>
             <div class="status-text" id="status-text">
-              Tap “I did it!” when you’ve made it happen.
+              Tap “I did it!” when you’ve nudged it forward.
             </div>
           </div>
         </div>
@@ -375,7 +361,9 @@
       </div>
     </div>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
     // Expanded challenge sets (+ Random, weighted litter boxes)
@@ -639,38 +627,34 @@
       ]
     };
 
-    const STORAGE_KEY = "dailyChallengeState_v5";
+    const STORAGE_KEY = "dailyChallengeState_v6";
 
-// Format a Date as YYYY-MM-DD in *local* time
-function formatDateLocal(d) {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+    // Format a Date as YYYY-MM-DD in local time
+    function formatDateLocal(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
 
-// "Today" with a 3am cutoff
-function getTodayString() {
-  const d = new Date();
-  // If it's after midnight but before 3am, still treat it as "yesterday"
-  if (d.getHours() < 3) {
-    d.setDate(d.getDate() - 1);
-  }
-  return formatDateLocal(d);
-}
+    // "Today" with a 3am cutoff
+    function getTodayString() {
+      const d = new Date();
+      if (d.getHours() < 3) {
+        d.setDate(d.getDate() - 1);
+      }
+      return formatDateLocal(d);
+    }
 
-// "Yesterday" relative to that 3am-adjusted "today"
-function getYesterdayString() {
-  const d = new Date();
-  // First apply the same 3am rule as above
-  if (d.getHours() < 3) {
-    d.setDate(d.getDate() - 1);
-  }
-  // Then go one more day back
-  d.setDate(d.getDate() - 1);
-  return formatDateLocal(d);
-}
-
+    // "Yesterday" relative to 3am-based "today"
+    function getYesterdayString() {
+      const d = new Date();
+      if (d.getHours() < 3) {
+        d.setDate(d.getDate() - 1);
+      }
+      d.setDate(d.getDate() - 1);
+      return formatDateLocal(d);
+    }
 
     function loadState() {
       try {
@@ -727,30 +711,26 @@ function getYesterdayString() {
       const challengeText = document.getElementById("challenge-text");
       const statusText = document.getElementById("status-text");
 
-       if (state.challenge && state.date) {
-    // Parse YYYY-MM-DD as a local date (not UTC)
-    let date;
-    if (/^\d{4}-\d{2}-\d{2}$/.test(state.date)) {
-      const [year, month, day] = state.date.split("-").map(Number);
-      date = new Date(year, month - 1, day); // local midnight
-    } else {
-      // fallback, in case old data is in a different format
-      date = new Date(state.date);
-    }
+      if (state.challenge && state.date) {
+        // Parse YYYY-MM-DD as a local date (not UTC)
+        let date;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(state.date)) {
+          const [year, month, day] = state.date.split("-").map(Number);
+          date = new Date(year, month - 1, day);
+        } else {
+          date = new Date(state.date);
+        }
 
-    const dateLabel = date.toLocaleDateString(undefined, {
-      weekday: "short",
-      month: "short",
-      day: "numeric"
-    });
-    datePill.textContent = dateLabel;
-    categoryPill.textContent = state.category || "Random";
-    challengeText.textContent = state.challenge;
-    statusText.textContent = "Tap “I did it!” when you’ve nudged it forward.";
-  } else {
-    ...
-  }
-
+        const dateLabel = date.toLocaleDateString(undefined, {
+          weekday: "short",
+          month: "short",
+          day: "numeric"
+        });
+        datePill.textContent = dateLabel;
+        categoryPill.textContent = state.category || "Random";
+        challengeText.textContent = state.challenge;
+        statusText.textContent = "Tap “I did it!” when you’ve nudged it forward.";
+      } else {
         categoryPill.textContent = "No challenge yet";
         datePill.textContent = "";
         challengeText.textContent = "Loading today’s mission…";
@@ -797,7 +777,7 @@ function getYesterdayString() {
         }
 
         if (state.lastCompletedDate === todayStr) {
-          friendlyStatus("You already did this, you silly goose!");
+          friendlyStatus("Already counted today. Extra effort = secret bonus XP.");
           return;
         }
 
@@ -813,14 +793,16 @@ function getYesterdayString() {
 
         saveState(state);
         updateStreakDisplay(state);
-friendlyStatus("Streak updated. 🥳");
+        friendlyStatus("Streak updated. 🥳");
 
-// 🎉 Little celebratory confetti burst!
-confetti({
-  particleCount: 80,
-  spread: 70,
-  origin: { y: 0.6 }
-});
+        // 🎉 Confetti burst when streak actually updates
+        if (typeof confetti === "function") {
+          confetti({
+            particleCount: Math.min(180, 60 + (state.streak || 1) * 8),
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }
       });
     });
   </script>
