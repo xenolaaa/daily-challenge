@@ -641,16 +641,36 @@
 
     const STORAGE_KEY = "dailyChallengeState_v5";
 
-    function getTodayString() {
-      const d = new Date();
-      return d.toISOString().slice(0, 10);
-    }
+// Format a Date as YYYY-MM-DD in *local* time
+function formatDateLocal(d) {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
-    function getYesterdayString() {
-      const d = new Date();
-      d.setDate(d.getDate() - 1);
-      return d.toISOString().slice(0, 10);
-    }
+// "Today" with a 3am cutoff
+function getTodayString() {
+  const d = new Date();
+  // If it's after midnight but before 3am, still treat it as "yesterday"
+  if (d.getHours() < 3) {
+    d.setDate(d.getDate() - 1);
+  }
+  return formatDateLocal(d);
+}
+
+// "Yesterday" relative to that 3am-adjusted "today"
+function getYesterdayString() {
+  const d = new Date();
+  // First apply the same 3am rule as above
+  if (d.getHours() < 3) {
+    d.setDate(d.getDate() - 1);
+  }
+  // Then go one more day back
+  d.setDate(d.getDate() - 1);
+  return formatDateLocal(d);
+}
+
 
     function loadState() {
       try {
