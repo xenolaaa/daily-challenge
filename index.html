@@ -727,18 +727,30 @@ function getYesterdayString() {
       const challengeText = document.getElementById("challenge-text");
       const statusText = document.getElementById("status-text");
 
-      if (state.challenge && state.date) {
-        const date = new Date(state.date);
-        const dateLabel = date.toLocaleDateString(undefined, {
-          weekday: "short",
-          month: "short",
-          day: "numeric"
-        });
-        datePill.textContent = dateLabel;
-        categoryPill.textContent = state.category || "Random";
-        challengeText.textContent = state.challenge;
-        statusText.textContent = "Tap “I did it!” when you’ve made it happen.";
-      } else {
+       if (state.challenge && state.date) {
+    // Parse YYYY-MM-DD as a local date (not UTC)
+    let date;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(state.date)) {
+      const [year, month, day] = state.date.split("-").map(Number);
+      date = new Date(year, month - 1, day); // local midnight
+    } else {
+      // fallback, in case old data is in a different format
+      date = new Date(state.date);
+    }
+
+    const dateLabel = date.toLocaleDateString(undefined, {
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    });
+    datePill.textContent = dateLabel;
+    categoryPill.textContent = state.category || "Random";
+    challengeText.textContent = state.challenge;
+    statusText.textContent = "Tap “I did it!” when you’ve nudged it forward.";
+  } else {
+    ...
+  }
+
         categoryPill.textContent = "No challenge yet";
         datePill.textContent = "";
         challengeText.textContent = "Loading today’s mission…";
